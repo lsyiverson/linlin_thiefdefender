@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">林林防盗</string>
+    <string name="start_defender">打开防盗功能</string>
+    <string name="end_defender">关闭防盗功能</string>
+    <string name="alert_warning">警告：如果这不是你的手机，请立即将它放下！</string>
+    <string name="input_passwd_notice">如果这是您的手机，请输入密码来关闭警报</string>
+    <string name="passwd_enter">关闭警报!</string>
+    <string name="set_passwd">设置密码</string>
+    <string name="set_passwd_msg">在使用本应用之前，你需要设置一个用于关闭警报的密码。</string>
+    <string name="cancel">取消</string>
+    <string name="setting">设置</string>
+    <string name="enter_old_psw">请输入旧密码</string>
+    <string name="enter_new_psw">请输入新密码</string>
+    <string name="confirm_new_psw">请确认新密码</string>
+    <string name="set_psw_bn">设置密码</string>
+    <string name="error">错误</string>
+    <string name="old_psw_err">你输入了错误的旧密码!</string>
+    <string name="empty_psw_err">你必须输入密码!</string>
+    <string name="mismatch_psw_err">新密码与确认密码不匹配!</string>
+    <string name="success">成功</string>
+    <string name="success_msg">你已经设置了密码，请牢记它。</string>
+    <string name="ok">确定</string>
+    <string name="error_passwd">对不起，密码错误！</string>
+    <string name="modify_passwd">修改密码</string>
+
+</resources>

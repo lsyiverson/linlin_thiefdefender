@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Linlin Thiefdefender</string>
+    <string name="start_defender">Open the defender</string>
+    <string name="end_defender">Close the defender</string>
+    <string name="alert_warning">Warning: If it\'s not your phone, please put it down!</string>
+    <string name="input_passwd_notice">If it is your phone, please input password to turn off the alert</string>
+    <string name="passwd_enter">Turn off the alert!</string>
+    <string name="set_passwd">Set a password</string>
+    <string name="set_passwd_msg">You need to set a password to stop the alert before starting use the app.</string>
+    <string name="cancel">Cancel</string>
+    <string name="setting">Setting</string>
+    <string name="enter_old_psw">Please enter the old password</string>
+    <string name="enter_new_psw">Please enter the new password</string>
+    <string name="confirm_new_psw">Please confirm the new password</string>
+    <string name="set_psw_bn">Set the password</string>
+    <string name="error">Error</string>
+    <string name="old_psw_err">You input a wrong old password!</string>
+    <string name="empty_psw_err">You must input a password!</string>
+    <string name="mismatch_psw_err">The new password is mismatch with confirm password!</string>
+    <string name="success">Success</string>
+    <string name="success_msg">You have set a password, Please remember it.</string>
+    <string name="ok">OK</string>
+    <string name="error_passwd">Sorry, the password is wrong!</string>
+    <string name="modify_passwd">Modify Password</string>
+
+</resources>
