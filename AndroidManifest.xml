@@ -35,8 +35,8 @@
         </activity>
 
         <service android:name=".CtrlService" >
-        </service>
-        <service android:name=".AlertService" >
+            <intent-filter android:priority="1000" >
+            </intent-filter>
         </service>
     </application>
 
