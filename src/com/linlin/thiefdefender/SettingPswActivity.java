@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class SettingPswActivity extends Activity {
     private static final String TAG = "SettingPswActivity";
@@ -45,8 +46,9 @@ public class SettingPswActivity extends Activity {
         mPasswdIsSet = (null != mOldPasswd) ? true : false;
 
         if (!mPasswdIsSet) {
-            mOldPasswdEditText.setEnabled(false);
-            mNewPasswdEditText.setSelected(true);
+            TextView oldPasswdText = (TextView) findViewById(R.id.old_psw_text);
+            oldPasswdText.setVisibility(View.GONE);
+            mOldPasswdEditText.setVisibility(View.GONE);
         }
 
         setPasswdButton.setOnClickListener(new OnClickListener() {

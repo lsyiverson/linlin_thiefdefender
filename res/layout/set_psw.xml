@@ -5,6 +5,7 @@
     android:orientation="vertical" >
     
     <TextView
+        android:id="@+id/old_psw_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
