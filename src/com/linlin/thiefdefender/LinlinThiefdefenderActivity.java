@@ -32,41 +32,15 @@ public class LinlinThiefdefenderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         mStartEndButton = (Button) findViewById(R.id.StartEndButton);
-        if (isServiceRunning()) {
-            mStartEndButton.setText(R.string.end_defender);
-        } else {
-            mStartEndButton.setText(R.string.start_defender);
-        }
 
-        mStartEndButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent intent = new Intent(LinlinThiefdefenderActivity.this,
-                        CtrlService.class);
-                if (getResources().getString(R.string.start_defender).equals(
-                        mStartEndButton.getText().toString())) {
-                    mStartEndButton.setText(R.string.end_defender);
-                    Log.d(TAG, "Start CtrlService");
-                    startService(intent);
-                    return;
-                }
-                if (getResources().getString(R.string.end_defender).equals(
-                        mStartEndButton.getText().toString())) {
-                    mStartEndButton.setText(R.string.start_defender);
-                    Log.d(TAG, "End CtrlService");
-                    stopService(intent);
-                    return;
-                }
-            }
-        });
-
+        // Get the password from the SharedPreferences
         AppData appData = (AppData) getApplicationContext();
 
         SharedPreferences sharedPfs = getSharedPreferences(
                 appData.getSharedPfsName(), Context.MODE_PRIVATE);
         String password = sharedPfs.getString(appData.getSharedPfsKey(), null);
+
+        // If the password is not set, pop up a dialog to set the password.
         if (null == password) {
             Dialog dialog = new AlertDialog.Builder(
                     LinlinThiefdefenderActivity.this)
@@ -90,13 +64,51 @@ public class LinlinThiefdefenderActivity extends Activity {
                                 @Override
                                 public void onClick(DialogInterface dialog,
                                         int which) {
-                                    System.exit(0);
+                                    LinlinThiefdefenderActivity.this.finish();
                                 }
                             }).setCancelable(false).create();
             dialog.show();
         }
     }
 
+    @Override
+    protected void onResume() {
+        initDisplayStates();
+
+        mStartEndButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LinlinThiefdefenderActivity.this,
+                        CtrlService.class);
+
+                // Decide what to do when the mStartEndButton press down.
+                if (getResources().getString(R.string.start_defender).equals(
+                        mStartEndButton.getText().toString())
+                        && !isServiceRunning()) {
+                    mStartEndButton.setText(R.string.end_defender);
+                    Log.d(TAG, "Start CtrlService");
+                    startService(intent);
+                } else if (getResources().getString(R.string.end_defender)
+                        .equals(mStartEndButton.getText().toString())
+                        && isServiceRunning()) {
+                    mStartEndButton.setText(R.string.start_defender);
+                    Log.d(TAG, "End CtrlService");
+                    stopService(intent);
+                } else {
+                    initDisplayStates();
+                }
+            }
+        });
+        super.onResume();
+    }
+
+    /**
+     * Get the state of the CtrlService.
+     * 
+     * @return true if the CtrlService is running, false if there is no
+     *         CtrlService running
+     */
     private boolean isServiceRunning() {
         ActivityManager am = (ActivityManager) this
                 .getSystemService(ACTIVITY_SERVICE);
@@ -109,6 +121,17 @@ public class LinlinThiefdefenderActivity extends Activity {
             }
         }
         return false;
+    }
+
+    /**
+     * Initialize the UI of the Button and etc.
+     */
+    private void initDisplayStates() {
+        if (isServiceRunning()) {
+            mStartEndButton.setText(R.string.end_defender);
+        } else {
+            mStartEndButton.setText(R.string.start_defender);
+        }
     }
 
     @Override
@@ -133,8 +156,18 @@ public class LinlinThiefdefenderActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        this.finish();
+        super.onBackPressed();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        this.finish();
+
+        // Kill the process if the CtrlService is not running.
+        if (!isServiceRunning()) {
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
 }

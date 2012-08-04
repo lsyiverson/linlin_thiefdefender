@@ -58,11 +58,11 @@ public class AlertActivity extends Activity {
 
             @Override
             public void onCompletion(MediaPlayer mp) {
-                // TODO Auto-generated method stub
                 mPlayer.release();
             }
         });
 
+        // Use vibrator
         mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         long[] pattern = { 500, 3500 };
         if (null != mVibrator) {
@@ -92,7 +92,7 @@ public class AlertActivity extends Activity {
                         if (null != mVibrator) {
                             mVibrator.cancel();
                         }
-                        finish();
+                        AlertActivity.this.finish();
                     } else {
                         Dialog errPasswd = new AlertDialog.Builder(
                                 AlertActivity.this)
@@ -117,12 +117,6 @@ public class AlertActivity extends Activity {
     @Override
     public void onBackPressed() {
         // Disable to exit the activity by press BACK key.
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        this.finish();
     }
 
 }

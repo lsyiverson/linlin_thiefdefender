@@ -22,7 +22,7 @@ public class SettingPswActivity extends Activity {
 
     private String mOldPasswd;
 
-    private boolean mIsSet;
+    private boolean mPasswdIsSet;
 
     private SharedPreferences mSharedPfs;
     private AppData mAppData;
@@ -42,9 +42,9 @@ public class SettingPswActivity extends Activity {
                 Context.MODE_PRIVATE);
         mOldPasswd = mSharedPfs.getString(mAppData.getSharedPfsKey(), null);
 
-        mIsSet = (null != mOldPasswd) ? true : false;
+        mPasswdIsSet = (null != mOldPasswd) ? true : false;
 
-        if (!mIsSet) {
+        if (!mPasswdIsSet) {
             mOldPasswdEditText.setEnabled(false);
             mNewPasswdEditText.setSelected(true);
         }
@@ -53,7 +53,9 @@ public class SettingPswActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                if (mIsSet) {
+                if (mPasswdIsSet) {
+
+                    // Enter the wrong old password
                     if (!mOldPasswdEditText.getText().toString()
                             .equals(mOldPasswd)) {
                         Dialog oldPswWrong = new AlertDialog.Builder(
@@ -64,23 +66,32 @@ public class SettingPswActivity extends Activity {
                         return;
                     }
                 }
+
+                /*
+                 * The new password EditView is empty or the confirm password
+                 * EditView is empty
+                 */
                 if (mNewPasswdEditText.getText().toString().equals("")
                         || mConfirmPasswdEditText.getText().toString()
                                 .equals("")) {
-                    Dialog emptyPswWrong = new AlertDialog.Builder(
+                    Dialog emptyPswError = new AlertDialog.Builder(
                             SettingPswActivity.this).setTitle(R.string.error)
                             .setMessage(R.string.empty_psw_err).create();
-                    emptyPswWrong.show();
+                    emptyPswError.show();
                     return;
                 }
+
+                // The new password and the confirm password is mismatch
                 if (!mNewPasswdEditText.getText().toString()
                         .equals(mConfirmPasswdEditText.getText().toString())) {
-                    Dialog mismatchPswWrong = new AlertDialog.Builder(
+                    Dialog mismatchPswError = new AlertDialog.Builder(
                             SettingPswActivity.this).setTitle(R.string.error)
                             .setMessage(R.string.mismatch_psw_err).create();
-                    mismatchPswWrong.show();
+                    mismatchPswError.show();
                     return;
                 }
+
+                // Save the new password
                 Editor editor = mSharedPfs.edit();
                 editor.putString(mAppData.getSharedPfsKey(), mNewPasswdEditText
                         .getText().toString());
@@ -94,17 +105,11 @@ public class SettingPswActivity extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog,
                                             int which) {
-                                        System.exit(0);
+                                        SettingPswActivity.this.finish();
                                     }
                                 }).setCancelable(false).create();
                 success.show();
             }
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        this.finish();
     }
 }
