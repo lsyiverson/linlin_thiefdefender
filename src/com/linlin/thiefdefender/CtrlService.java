@@ -111,7 +111,6 @@ public class CtrlService extends Service implements SensorEventListener {
                 Log.d(TAG, "offhook");
                 try {
                     mContext.unregisterReceiver(mScreenStateReceiver);
-                    unregisterSensorListener();
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 }
@@ -119,7 +118,6 @@ public class CtrlService extends Service implements SensorEventListener {
             case TelephonyManager.CALL_STATE_IDLE:
                 Log.d(TAG, "idle");
                 mContext.registerReceiver(mScreenStateReceiver, mFilter);
-                registerSensorListener();
                 break;
             }
         }

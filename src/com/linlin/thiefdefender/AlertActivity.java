@@ -1,7 +1,5 @@
 package com.linlin.thiefdefender;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -43,15 +41,6 @@ public class AlertActivity extends Activity {
 
         mPlayer = MediaPlayer.create(AlertActivity.this, R.raw.alert);
         mPlayer.setLooping(true);
-        try {
-            mPlayer.prepare();
-        } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         mPlayer.start();
 
         mPlayer.setOnCompletionListener(new OnCompletionListener() {
