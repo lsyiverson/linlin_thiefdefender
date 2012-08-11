@@ -9,13 +9,16 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 public class CtrlService extends Service implements SensorEventListener {
     private static final String TAG = "CtrlService";
+    public static final int START_SENSOR_LISTENER = 0;
 
     /**
      * Intent used for start AlertActivity
@@ -96,7 +99,9 @@ public class CtrlService extends Service implements SensorEventListener {
                 mScreenON = false;
                 if (TelephonyManager.CALL_STATE_OFFHOOK != mTelephonyManager
                         .getCallState()) {
-                    registerSensorListener();
+                    // delay 5 second to register sensor listener
+                    Thread delayThread = new Thread(new delayRun(5000));
+                    delayThread.start();
                 }
             }
         }
@@ -184,5 +189,49 @@ public class CtrlService extends Service implements SensorEventListener {
         if (null != mProximitySensor) {
             mSensorManager.unregisterListener(this, mProximitySensor);
         }
+    }
+
+    private Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case START_SENSOR_LISTENER:
+                if (!mScreenON) {
+                    registerSensorListener();
+                }
+                break;
+            }
+            super.handleMessage(msg);
+        }
+
+    };
+
+    private class delayRun implements Runnable {
+        int delayTime;
+
+        public delayRun(int time) {
+            this.delayTime = time;
+        }
+
+        public delayRun() {
+            this.delayTime = 5000;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(delayTime);// Delay some seconds to start alert
+                                        // listener
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            Message msg = new Message();
+            msg.what = START_SENSOR_LISTENER;
+            CtrlService.this.handler.sendMessage(msg);
+        }
+
     }
 }
