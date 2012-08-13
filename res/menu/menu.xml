@@ -5,5 +5,10 @@
         android:id="@+id/mod_psw"
         android:title="@string/modify_passwd">
     </item>
+    
+    <item
+        android:id="@+id/dump_db"
+        android:title="@string/dump_database">
+    </item>
 
 </menu>

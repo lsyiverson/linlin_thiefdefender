@@ -2,9 +2,11 @@ package com.linlin.thiefdefender;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources.Theme;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -142,6 +144,7 @@ public class CtrlService extends Service implements SensorEventListener {
                     if (!mScreenON && event.values[0] / mLightValue >= 20) {
                         Log.i(TAG, "Light Alert!!!");
                         startActivity(mAlertIntent);
+                        storeAlert("Light Sensor Changed");
                     }
                 }
                 mLightValue = event.values[0];
@@ -153,6 +156,7 @@ public class CtrlService extends Service implements SensorEventListener {
                     if (!mScreenON && event.values[0] > mProximityValue) {
                         Log.i(TAG, "Proximity Alert!!!");
                         startActivity(mAlertIntent);
+                        storeAlert("Proximity Sensor Changed");
                     }
                 }
                 mProximityValue = event.values[0];
@@ -162,7 +166,19 @@ public class CtrlService extends Service implements SensorEventListener {
             break;
         }
     }
-
+    
+    /**
+     * 
+     * @param event The event, which causes the alert.
+     */
+    private void storeAlert(String event) {
+        ThiefDefenderStore store = ThiefDefenderStore.getDefaultStore(getApplicationContext());
+        ContentValues alertValues = new ContentValues();
+        alertValues.put(ThiefDefenderAlert.START_TIME, System.currentTimeMillis());
+        alertValues.put(ThiefDefenderAlert.EVENT, event);
+        store.insertOrIgnore(alertValues);
+    }
+    
     /**
      * register the light and proximity sensor
      */

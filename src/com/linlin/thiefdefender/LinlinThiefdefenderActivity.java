@@ -151,6 +151,12 @@ public class LinlinThiefdefenderActivity extends Activity {
                     SettingPswActivity.class);
             startActivity(intent);
             break;
+        case R.id.dump_db:
+            try {
+                ThiefDefenderUtils.dumpDatabase(getPackageName(), ThiefDefenderConstants.DB_NAME);
+            } catch (Exception e) {
+            }
+            break;
         }
         return true;
     }

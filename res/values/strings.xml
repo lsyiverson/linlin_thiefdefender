@@ -24,5 +24,6 @@
     <string name="ok">OK</string>
     <string name="error_passwd">Sorry, the password is wrong!</string>
     <string name="modify_passwd">Modify Password</string>
+    <string name="dump_database">Dump Database</string>
 
 </resources>
