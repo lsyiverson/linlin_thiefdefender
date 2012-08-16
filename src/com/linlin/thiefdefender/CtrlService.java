@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources.Theme;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -166,30 +165,35 @@ public class CtrlService extends Service implements SensorEventListener {
             break;
         }
     }
-    
+
     /**
      * 
-     * @param event The event, which causes the alert.
+     * @param event
+     *            The event, which causes the alert.
      */
     private void storeAlert(String event) {
-        ThiefDefenderStore store = ThiefDefenderStore.getDefaultStore(getApplicationContext());
+        ThiefDefenderStore store = ThiefDefenderStore
+                .getDefaultStore(getApplicationContext());
         ContentValues alertValues = new ContentValues();
-        alertValues.put(ThiefDefenderAlert.START_TIME, System.currentTimeMillis());
+        alertValues.put(ThiefDefenderAlert.START_TIME,
+                System.currentTimeMillis());
         alertValues.put(ThiefDefenderAlert.EVENT, event);
         store.insertOrIgnore(alertValues);
     }
-    
+
     /**
-     * register the light and proximity sensor
+     * Register the light and proximity sensor
+     * 
+     * It preferred to use proximity sensor. If the proximity sensor is
+     * unavailable, it will using the light sensor
      */
     private void registerSensorListener() {
         Log.d(TAG, "registerSensorListener");
-        if (null != mLightSensor) {
-            mSensorManager.registerListener(this, mLightSensor,
-                    SensorManager.SENSOR_DELAY_NORMAL);
-        }
         if (null != mProximitySensor) {
             mSensorManager.registerListener(this, mProximitySensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        } else if (null != mLightSensor) {
+            mSensorManager.registerListener(this, mLightSensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
@@ -199,11 +203,10 @@ public class CtrlService extends Service implements SensorEventListener {
      */
     private void unregisterSensorListener() {
         Log.d(TAG, "unregisterSensorListener");
-        if (null != mLightSensor) {
-            mSensorManager.unregisterListener(this, mLightSensor);
-        }
         if (null != mProximitySensor) {
             mSensorManager.unregisterListener(this, mProximitySensor);
+        } else if (null != mLightSensor) {
+            mSensorManager.unregisterListener(this, mLightSensor);
         }
     }
 
