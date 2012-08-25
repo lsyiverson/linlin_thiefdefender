@@ -1,3 +1,4 @@
+
 package com.linlin.thiefdefender;
 
 import android.app.Activity;
@@ -18,8 +19,11 @@ import android.widget.EditText;
 
 public class AlertActivity extends Activity {
     private MediaPlayer mPlayer = new MediaPlayer();
+
     private AudioManager am;
+
     private int mCurrentVolume;
+
     private Vibrator mVibrator;
 
     private EditText mPasswdText;
@@ -29,11 +33,11 @@ public class AlertActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alert);
 
-        Button enterPasswdButton = (Button) findViewById(R.id.passwd_button);
-        mPasswdText = (EditText) findViewById(R.id.passwd);
+        Button enterPasswdButton = (Button)findViewById(R.id.passwd_button);
+        mPasswdText = (EditText)findViewById(R.id.passwd);
 
         // Set the stream volume to max
-        am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        am = (AudioManager)getSystemService(AUDIO_SERVICE);
         mCurrentVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         am.setStreamVolume(AudioManager.STREAM_MUSIC,
                 am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
@@ -52,8 +56,10 @@ public class AlertActivity extends Activity {
         });
 
         // Use vibrator
-        mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        long[] pattern = { 500, 3500 };
+        mVibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+        long[] pattern = {
+                500, 3500
+        };
         if (null != mVibrator) {
             mVibrator.vibrate(pattern, 0);
         }
@@ -62,11 +68,10 @@ public class AlertActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                AppData appData = (AppData) getApplicationContext();
-                SharedPreferences sharedPfs = getSharedPreferences(
-                        appData.getSharedPfsName(), Context.MODE_PRIVATE);
-                String password = sharedPfs.getString(
-                        appData.getSharedPfsKey(), null);
+                AppData appData = (AppData)getApplicationContext();
+                SharedPreferences sharedPfs = getSharedPreferences(appData.getSharedPfsName(),
+                        Context.MODE_PRIVATE);
+                String password = sharedPfs.getString(appData.getSharedPfsKey(), null);
 
                 if (null != password) {
                     if (mPasswdText.getText().toString().equals(password)) {
@@ -74,8 +79,7 @@ public class AlertActivity extends Activity {
                         mPlayer.release();
 
                         // Recover the stream volume
-                        am.setStreamVolume(AudioManager.STREAM_MUSIC,
-                                mCurrentVolume,
+                        am.setStreamVolume(AudioManager.STREAM_MUSIC, mCurrentVolume,
                                 AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
 
                         if (null != mVibrator) {
@@ -83,19 +87,16 @@ public class AlertActivity extends Activity {
                         }
                         AlertActivity.this.finish();
                     } else {
-                        Dialog errPasswd = new AlertDialog.Builder(
-                                AlertActivity.this)
-                                .setTitle(R.string.error)
-                                .setMessage(R.string.error_passwd)
-                                .setPositiveButton(R.string.ok,
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(
-                                                    DialogInterface dialog,
-                                                    int which) {
-                                                mPasswdText.setText("");
-                                            }
-                                        }).setCancelable(false).create();
+                        Dialog errPasswd = new AlertDialog.Builder(AlertActivity.this)
+                        .setTitle(R.string.error)
+                        .setMessage(R.string.error_passwd)
+                        .setPositiveButton(R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mPasswdText.setText("");
+                            }
+                        }).setCancelable(false).create();
                         errPasswd.show();
                     }
                 }

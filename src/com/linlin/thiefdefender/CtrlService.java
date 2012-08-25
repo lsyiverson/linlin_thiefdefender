@@ -1,3 +1,4 @@
+
 package com.linlin.thiefdefender;
 
 import android.app.Service;
@@ -19,21 +20,30 @@ import android.util.Log;
 
 public class CtrlService extends Service implements SensorEventListener {
     private static final String TAG = "CtrlService";
+
     public static final int START_SENSOR_LISTENER = 0;
 
     /**
      * Intent used for start AlertActivity
      */
     private Intent mAlertIntent;
+
     private Context mContext;
+
     private IntentFilter mFilter;
 
     private SensorManager mSensorManager;
+
     private TelephonyManager mTelephonyManager;
+
     private Sensor mLightSensor;
+
     private Sensor mProximitySensor;
+
     private float mLightValue = -1;
+
     private float mProximityValue = -1;
+
     private boolean mScreenON = true;
 
     @Override
@@ -48,16 +58,14 @@ public class CtrlService extends Service implements SensorEventListener {
         mFilter.addAction(Intent.ACTION_SCREEN_ON);
         mFilter.addAction(Intent.ACTION_SCREEN_OFF);
 
-        mTelephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        mTelephonyManager.listen(new TelListener(),
-                PhoneStateListener.LISTEN_CALL_STATE);
+        mTelephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        mTelephonyManager.listen(new TelListener(), PhoneStateListener.LISTEN_CALL_STATE);
 
         // Get the light sensor and proximity sensor
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 
         mLightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        mProximitySensor = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
     }
 
     @Override
@@ -98,8 +106,7 @@ public class CtrlService extends Service implements SensorEventListener {
             }
             if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                 mScreenON = false;
-                if (TelephonyManager.CALL_STATE_OFFHOOK != mTelephonyManager
-                        .getCallState()) {
+                if (TelephonyManager.CALL_STATE_OFFHOOK != mTelephonyManager.getCallState()) {
                     // delay 5 second to register sensor listener
                     Thread delayThread = new Thread(new delayRun(5000));
                     delayThread.start();
@@ -113,18 +120,18 @@ public class CtrlService extends Service implements SensorEventListener {
         public void onCallStateChanged(int state, String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);
             switch (state) {
-            case TelephonyManager.CALL_STATE_OFFHOOK:
-                Log.d(TAG, "offhook");
-                try {
-                    mContext.unregisterReceiver(mScreenStateReceiver);
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case TelephonyManager.CALL_STATE_IDLE:
-                Log.d(TAG, "idle");
-                mContext.registerReceiver(mScreenStateReceiver, mFilter);
-                break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    Log.d(TAG, "offhook");
+                    try {
+                        mContext.unregisterReceiver(mScreenStateReceiver);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                    Log.d(TAG, "idle");
+                    mContext.registerReceiver(mScreenStateReceiver, mFilter);
+                    break;
             }
         }
     }
@@ -137,55 +144,50 @@ public class CtrlService extends Service implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         switch (event.sensor.getType()) {
-        case Sensor.TYPE_LIGHT:
-            if (null != mLightSensor) {
-                if (-1 != mLightValue) {
-                    if (!mScreenON && event.values[0] / mLightValue >= 20) {
-                        Log.i(TAG, "Light Alert!!!");
-                        startActivity(mAlertIntent);
-                        storeAlert("Light Sensor Changed");
+            case Sensor.TYPE_LIGHT:
+                if (null != mLightSensor) {
+                    if (-1 != mLightValue) {
+                        if (!mScreenON && event.values[0] / mLightValue >= 20) {
+                            Log.i(TAG, "Light Alert!!!");
+                            startActivity(mAlertIntent);
+                            storeAlert("Light Sensor Changed");
+                        }
                     }
+                    mLightValue = event.values[0];
                 }
-                mLightValue = event.values[0];
-            }
-            break;
-        case Sensor.TYPE_PROXIMITY:
-            if (null != mProximitySensor) {
-                if (-1 != mProximityValue) {
-                    if (!mScreenON && event.values[0] > mProximityValue) {
-                        Log.i(TAG, "Proximity Alert!!!");
-                        startActivity(mAlertIntent);
-                        storeAlert("Proximity Sensor Changed");
+                break;
+            case Sensor.TYPE_PROXIMITY:
+                if (null != mProximitySensor) {
+                    if (-1 != mProximityValue) {
+                        if (!mScreenON && event.values[0] > mProximityValue) {
+                            Log.i(TAG, "Proximity Alert!!!");
+                            startActivity(mAlertIntent);
+                            storeAlert("Proximity Sensor Changed");
+                        }
                     }
+                    mProximityValue = event.values[0];
                 }
-                mProximityValue = event.values[0];
-            }
-            break;
-        default:
-            break;
+                break;
+            default:
+                break;
         }
     }
 
     /**
-     * 
-     * @param event
-     *            The event, which causes the alert.
+     * @param event The event, which causes the alert.
      */
     private void storeAlert(String event) {
-        ThiefDefenderStore store = ThiefDefenderStore
-                .getDefaultStore(getApplicationContext());
+        ThiefDefenderStore store = ThiefDefenderStore.getDefaultStore(getApplicationContext());
         ContentValues alertValues = new ContentValues();
-        alertValues.put(ThiefDefenderAlert.START_TIME,
-                System.currentTimeMillis());
+        alertValues.put(ThiefDefenderAlert.START_TIME, System.currentTimeMillis());
         alertValues.put(ThiefDefenderAlert.EVENT, event);
         store.insertOrIgnore(alertValues);
     }
 
     /**
-     * Register the light and proximity sensor
-     * 
-     * It preferred to use proximity sensor. If the proximity sensor is
-     * unavailable, it will using the light sensor
+     * Register the light and proximity sensor It preferred to use proximity
+     * sensor. If the proximity sensor is unavailable, it will using the light
+     * sensor
      */
     private void registerSensorListener() {
         Log.d(TAG, "registerSensorListener");
@@ -193,8 +195,7 @@ public class CtrlService extends Service implements SensorEventListener {
             mSensorManager.registerListener(this, mProximitySensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
         } else if (null != mLightSensor) {
-            mSensorManager.registerListener(this, mLightSensor,
-                    SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mLightSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 
@@ -215,11 +216,11 @@ public class CtrlService extends Service implements SensorEventListener {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-            case START_SENSOR_LISTENER:
-                if (!mScreenON) {
-                    registerSensorListener();
-                }
-                break;
+                case START_SENSOR_LISTENER:
+                    if (!mScreenON) {
+                        registerSensorListener();
+                    }
+                    break;
             }
             super.handleMessage(msg);
         }
@@ -241,7 +242,7 @@ public class CtrlService extends Service implements SensorEventListener {
         public void run() {
             try {
                 Thread.sleep(delayTime);// Delay some seconds to start alert
-                                        // listener
+                // listener
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

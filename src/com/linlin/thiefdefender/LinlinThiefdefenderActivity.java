@@ -1,3 +1,4 @@
+
 package com.linlin.thiefdefender;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import android.widget.Button;
 
 public class LinlinThiefdefenderActivity extends Activity {
     private static final String TAG = "LinlinThiefdefenderActivity";
+
     private static final String CTRLSERVICE_CLASSNAME = "com.linlin.thiefdefender.CtrlService";
 
     private Button mStartEndButton;
@@ -31,42 +33,34 @@ public class LinlinThiefdefenderActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        mStartEndButton = (Button) findViewById(R.id.StartEndButton);
+        mStartEndButton = (Button)findViewById(R.id.StartEndButton);
 
         // Get the password from the SharedPreferences
-        AppData appData = (AppData) getApplicationContext();
+        AppData appData = (AppData)getApplicationContext();
 
-        SharedPreferences sharedPfs = getSharedPreferences(
-                appData.getSharedPfsName(), Context.MODE_PRIVATE);
+        SharedPreferences sharedPfs = getSharedPreferences(appData.getSharedPfsName(),
+                Context.MODE_PRIVATE);
         String password = sharedPfs.getString(appData.getSharedPfsKey(), null);
 
         // If the password is not set, pop up a dialog to set the password.
         if (null == password) {
-            Dialog dialog = new AlertDialog.Builder(
-                    LinlinThiefdefenderActivity.this)
-                    .setTitle(R.string.set_passwd)
-                    .setMessage(R.string.set_passwd_msg)
-                    .setPositiveButton(R.string.setting,
-                            new DialogInterface.OnClickListener() {
+            Dialog dialog = new AlertDialog.Builder(LinlinThiefdefenderActivity.this)
+            .setTitle(R.string.set_passwd).setMessage(R.string.set_passwd_msg)
+            .setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                        int which) {
-                                    Intent intent = new Intent(
-                                            LinlinThiefdefenderActivity.this,
-                                            SettingPswActivity.class);
-                                    startActivity(intent);
-                                }
-                            })
-                    .setNegativeButton(R.string.cancel,
-                            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(LinlinThiefdefenderActivity.this,
+                            SettingPswActivity.class);
+                    startActivity(intent);
+                }
+            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                        int which) {
-                                    LinlinThiefdefenderActivity.this.finish();
-                                }
-                            }).setCancelable(false).create();
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    LinlinThiefdefenderActivity.this.finish();
+                }
+            }).setCancelable(false).create();
             dialog.show();
         }
     }
@@ -79,8 +73,7 @@ public class LinlinThiefdefenderActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LinlinThiefdefenderActivity.this,
-                        CtrlService.class);
+                Intent intent = new Intent(LinlinThiefdefenderActivity.this, CtrlService.class);
 
                 // Decide what to do when the mStartEndButton press down.
                 if (getResources().getString(R.string.start_defender).equals(
@@ -89,8 +82,8 @@ public class LinlinThiefdefenderActivity extends Activity {
                     mStartEndButton.setText(R.string.end_defender);
                     Log.d(TAG, "Start CtrlService");
                     startService(intent);
-                } else if (getResources().getString(R.string.end_defender)
-                        .equals(mStartEndButton.getText().toString())
+                } else if (getResources().getString(R.string.end_defender).equals(
+                        mStartEndButton.getText().toString())
                         && isServiceRunning()) {
                     mStartEndButton.setText(R.string.start_defender);
                     Log.d(TAG, "End CtrlService");
@@ -110,13 +103,11 @@ public class LinlinThiefdefenderActivity extends Activity {
      *         CtrlService running
      */
     private boolean isServiceRunning() {
-        ActivityManager am = (ActivityManager) this
-                .getSystemService(ACTIVITY_SERVICE);
-        ArrayList<RunningServiceInfo> runningServiceInfos = (ArrayList<RunningServiceInfo>) am
+        ActivityManager am = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
+        ArrayList<RunningServiceInfo> runningServiceInfos = (ArrayList<RunningServiceInfo>)am
                 .getRunningServices(30);
         for (int i = 0; i < runningServiceInfos.size(); i++) {
-            if (runningServiceInfos.get(i).service.getClassName().equals(
-                    CTRLSERVICE_CLASSNAME)) {
+            if (runningServiceInfos.get(i).service.getClassName().equals(CTRLSERVICE_CLASSNAME)) {
                 return true;
             }
         }
@@ -146,17 +137,18 @@ public class LinlinThiefdefenderActivity extends Activity {
         int item_id = item.getItemId();
 
         switch (item_id) {
-        case R.id.mod_psw:
-            Intent intent = new Intent(LinlinThiefdefenderActivity.this,
-                    SettingPswActivity.class);
-            startActivity(intent);
-            break;
-        case R.id.dump_db:
-            try {
-                ThiefDefenderUtils.dumpDatabase(getPackageName(), ThiefDefenderConstants.DB_NAME);
-            } catch (Exception e) {
-            }
-            break;
+            case R.id.mod_psw:
+                Intent intent = new Intent(LinlinThiefdefenderActivity.this,
+                        SettingPswActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.dump_db:
+                try {
+                    ThiefDefenderUtils.dumpDatabase(getPackageName(),
+                            ThiefDefenderConstants.DB_NAME);
+                } catch (Exception e) {
+                }
+                break;
         }
         return true;
     }

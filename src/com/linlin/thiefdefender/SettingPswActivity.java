@@ -1,3 +1,4 @@
+
 package com.linlin.thiefdefender;
 
 import android.app.Activity;
@@ -18,7 +19,9 @@ public class SettingPswActivity extends Activity {
     private static final String TAG = "SettingPswActivity";
 
     private EditText mOldPasswdEditText;
+
     private EditText mNewPasswdEditText;
+
     private EditText mConfirmPasswdEditText;
 
     private String mOldPasswd;
@@ -26,6 +29,7 @@ public class SettingPswActivity extends Activity {
     private boolean mPasswdIsSet;
 
     private SharedPreferences mSharedPfs;
+
     private AppData mAppData;
 
     @Override
@@ -33,20 +37,19 @@ public class SettingPswActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_psw);
 
-        mOldPasswdEditText = (EditText) findViewById(R.id.old_psw);
-        mNewPasswdEditText = (EditText) findViewById(R.id.new_psw);
-        mConfirmPasswdEditText = (EditText) findViewById(R.id.confirm_psw);
-        Button setPasswdButton = (Button) findViewById(R.id.set_psw_button);
+        mOldPasswdEditText = (EditText)findViewById(R.id.old_psw);
+        mNewPasswdEditText = (EditText)findViewById(R.id.new_psw);
+        mConfirmPasswdEditText = (EditText)findViewById(R.id.confirm_psw);
+        Button setPasswdButton = (Button)findViewById(R.id.set_psw_button);
 
-        mAppData = (AppData) getApplicationContext();
-        mSharedPfs = getSharedPreferences(mAppData.getSharedPfsName(),
-                Context.MODE_PRIVATE);
+        mAppData = (AppData)getApplicationContext();
+        mSharedPfs = getSharedPreferences(mAppData.getSharedPfsName(), Context.MODE_PRIVATE);
         mOldPasswd = mSharedPfs.getString(mAppData.getSharedPfsKey(), null);
 
         mPasswdIsSet = (null != mOldPasswd) ? true : false;
 
         if (!mPasswdIsSet) {
-            TextView oldPasswdText = (TextView) findViewById(R.id.old_psw_text);
+            TextView oldPasswdText = (TextView)findViewById(R.id.old_psw_text);
             oldPasswdText.setVisibility(View.GONE);
             mOldPasswdEditText.setVisibility(View.GONE);
         }
@@ -58,12 +61,9 @@ public class SettingPswActivity extends Activity {
                 if (mPasswdIsSet) {
 
                     // Enter the wrong old password
-                    if (!mOldPasswdEditText.getText().toString()
-                            .equals(mOldPasswd)) {
-                        Dialog oldPswWrong = new AlertDialog.Builder(
-                                SettingPswActivity.this)
-                                .setTitle(R.string.error)
-                                .setMessage(R.string.old_psw_err).create();
+                    if (!mOldPasswdEditText.getText().toString().equals(mOldPasswd)) {
+                        Dialog oldPswWrong = new AlertDialog.Builder(SettingPswActivity.this)
+                        .setTitle(R.string.error).setMessage(R.string.old_psw_err).create();
                         oldPswWrong.show();
                         return;
                     }
@@ -74,11 +74,9 @@ public class SettingPswActivity extends Activity {
                  * EditView is empty
                  */
                 if (mNewPasswdEditText.getText().toString().equals("")
-                        || mConfirmPasswdEditText.getText().toString()
-                                .equals("")) {
-                    Dialog emptyPswError = new AlertDialog.Builder(
-                            SettingPswActivity.this).setTitle(R.string.error)
-                            .setMessage(R.string.empty_psw_err).create();
+                        || mConfirmPasswdEditText.getText().toString().equals("")) {
+                    Dialog emptyPswError = new AlertDialog.Builder(SettingPswActivity.this)
+                    .setTitle(R.string.error).setMessage(R.string.empty_psw_err).create();
                     emptyPswError.show();
                     return;
                 }
@@ -86,30 +84,26 @@ public class SettingPswActivity extends Activity {
                 // The new password and the confirm password is mismatch
                 if (!mNewPasswdEditText.getText().toString()
                         .equals(mConfirmPasswdEditText.getText().toString())) {
-                    Dialog mismatchPswError = new AlertDialog.Builder(
-                            SettingPswActivity.this).setTitle(R.string.error)
-                            .setMessage(R.string.mismatch_psw_err).create();
+                    Dialog mismatchPswError = new AlertDialog.Builder(SettingPswActivity.this)
+                    .setTitle(R.string.error).setMessage(R.string.mismatch_psw_err)
+                    .create();
                     mismatchPswError.show();
                     return;
                 }
 
                 // Save the new password
                 Editor editor = mSharedPfs.edit();
-                editor.putString(mAppData.getSharedPfsKey(), mNewPasswdEditText
-                        .getText().toString());
+                editor.putString(mAppData.getSharedPfsKey(), mNewPasswdEditText.getText()
+                        .toString());
                 editor.commit();
-                Dialog success = new AlertDialog.Builder(
-                        SettingPswActivity.this)
-                        .setTitle(R.string.success)
-                        .setMessage(R.string.success_msg)
-                        .setPositiveButton(R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                            int which) {
-                                        SettingPswActivity.this.finish();
-                                    }
-                                }).setCancelable(false).create();
+                Dialog success = new AlertDialog.Builder(SettingPswActivity.this)
+                .setTitle(R.string.success).setMessage(R.string.success_msg)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SettingPswActivity.this.finish();
+                    }
+                }).setCancelable(false).create();
                 success.show();
             }
         });

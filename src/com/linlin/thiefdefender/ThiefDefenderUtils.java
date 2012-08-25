@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package com.linlin.thiefdefender;
 
 import java.io.File;
@@ -13,19 +14,17 @@ import android.os.Environment;
 
 /**
  * @author Tim.Lian
- *
  */
 public class ThiefDefenderUtils {
-    
+
     /**
-     *  Dump the database file to external storage
-     *
+     * Dump the database file to external storage
      */
     static void dumpDatabase(String packageName, String fileName) throws IOException {
         File dbFile = new File("/data/data/" + packageName + "/databases/" + fileName);
         if (dbFile.exists()) {
             FileInputStream fis = new FileInputStream(dbFile);
-            String outFileName = Environment.getExternalStorageDirectory()+ "/" + fileName;
+            String outFileName = Environment.getExternalStorageDirectory() + "/" + fileName;
             OutputStream output = new FileOutputStream(outFileName);
             byte[] buffer = new byte[1024];
             int length;
@@ -38,5 +37,6 @@ public class ThiefDefenderUtils {
         }
     }
 
-    private ThiefDefenderUtils() { }
+    private ThiefDefenderUtils() {
+    }
 }
