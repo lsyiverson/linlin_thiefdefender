@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -44,7 +45,10 @@ public class LinlinThiefdefenderActivity extends Activity {
 
         // If the password is not set, pop up a dialog to set the password.
         if (null == password) {
-            Dialog dialog = new AlertDialog.Builder(LinlinThiefdefenderActivity.this)
+            AlertDialog.Builder dialogBuilder = (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) ? new AlertDialog.Builder(
+                    LinlinThiefdefenderActivity.this) : new AlertDialog.Builder(
+                    LinlinThiefdefenderActivity.this, AlertDialog.THEME_HOLO_DARK);
+            Dialog dialog = dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(R.string.set_passwd).setMessage(R.string.set_passwd_msg)
                     .setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
 

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -87,7 +88,11 @@ public class AlertActivity extends Activity {
                         }
                         AlertActivity.this.finish();
                     } else {
-                        Dialog errPasswd = new AlertDialog.Builder(AlertActivity.this)
+                        AlertDialog.Builder dialogBuilder = (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) ? new AlertDialog.Builder(
+                                AlertActivity.this) : new AlertDialog.Builder(AlertActivity.this,
+                                AlertDialog.THEME_HOLO_DARK);
+                        Dialog errPasswd = dialogBuilder
+                                .setIcon(android.R.drawable.ic_dialog_alert)
                                 .setTitle(R.string.error)
                                 .setMessage(R.string.error_passwd)
                                 .setPositiveButton(R.string.ok,

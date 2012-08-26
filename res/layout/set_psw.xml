@@ -3,60 +3,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/old_psw_text"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/enter_old_psw" >
-    </TextView>
+        android:layout_height="fill_parent" >
 
-    <EditText
-        android:id="@+id/old_psw"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:inputType="textPassword" >
-    </EditText>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/enter_new_psw" >
-    </TextView>
+            <TextView
+                android:id="@+id/old_psw_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/enter_old_psw" >
+            </TextView>
 
-    <EditText
-        android:id="@+id/new_psw"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:inputType="textPassword" >
-    </EditText>
+            <EditText
+                android:id="@+id/old_psw"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:inputType="textPassword" >
+            </EditText>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_margin="5dp"
-        android:text="@string/confirm_new_psw" >
-    </TextView>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/enter_new_psw" >
+            </TextView>
 
-    <EditText
-        android:id="@+id/confirm_psw"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:inputType="textPassword" >
-    </EditText>
+            <EditText
+                android:id="@+id/new_psw"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:inputType="textPassword" >
+            </EditText>
 
-    <Button
-        android:id="@+id/set_psw_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/set_psw_bn" >
-    </Button>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_margin="5dp"
+                android:text="@string/confirm_new_psw" >
+            </TextView>
+
+            <EditText
+                android:id="@+id/confirm_psw"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:inputType="textPassword" >
+            </EditText>
+
+            <Button
+                android:id="@+id/set_psw_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/set_psw_bn" >
+            </Button>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

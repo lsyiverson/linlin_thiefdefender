@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,10 +33,27 @@ public class SettingPswActivity extends Activity {
 
     private AppData mAppData;
 
+    private AlertDialog.Builder mDialogBuilder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_psw);
+        mDialogBuilder = (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) ? new AlertDialog.Builder(
+                SettingPswActivity.this) : new AlertDialog.Builder(SettingPswActivity.this,
+                AlertDialog.THEME_HOLO_DARK);
+        mDialogBuilder = mDialogBuilder.setPositiveButton(R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cleanAllEditText();
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                cleanAllEditText();
+            }
+        });
 
         mOldPasswdEditText = (EditText)findViewById(R.id.old_psw);
         mNewPasswdEditText = (EditText)findViewById(R.id.new_psw);
@@ -62,7 +80,8 @@ public class SettingPswActivity extends Activity {
 
                     // Enter the wrong old password
                     if (!mOldPasswdEditText.getText().toString().equals(mOldPasswd)) {
-                        Dialog oldPswWrong = new AlertDialog.Builder(SettingPswActivity.this)
+                        Dialog oldPswWrong = mDialogBuilder
+                                .setIcon(android.R.drawable.ic_dialog_alert)
                                 .setTitle(R.string.error).setMessage(R.string.old_psw_err).create();
                         oldPswWrong.show();
                         return;
@@ -75,8 +94,9 @@ public class SettingPswActivity extends Activity {
                  */
                 if (mNewPasswdEditText.getText().toString().equals("")
                         || mConfirmPasswdEditText.getText().toString().equals("")) {
-                    Dialog emptyPswError = new AlertDialog.Builder(SettingPswActivity.this)
-                            .setTitle(R.string.error).setMessage(R.string.empty_psw_err).create();
+                    Dialog emptyPswError = mDialogBuilder
+                            .setIcon(android.R.drawable.ic_dialog_alert).setTitle(R.string.error)
+                            .setMessage(R.string.empty_psw_err).create();
                     emptyPswError.show();
                     return;
                 }
@@ -84,9 +104,9 @@ public class SettingPswActivity extends Activity {
                 // The new password and the confirm password is mismatch
                 if (!mNewPasswdEditText.getText().toString()
                         .equals(mConfirmPasswdEditText.getText().toString())) {
-                    Dialog mismatchPswError = new AlertDialog.Builder(SettingPswActivity.this)
-                            .setTitle(R.string.error).setMessage(R.string.mismatch_psw_err)
-                            .create();
+                    Dialog mismatchPswError = mDialogBuilder
+                            .setIcon(android.R.drawable.ic_dialog_alert).setTitle(R.string.error)
+                            .setMessage(R.string.mismatch_psw_err).create();
                     mismatchPswError.show();
                     return;
                 }
@@ -96,7 +116,7 @@ public class SettingPswActivity extends Activity {
                 editor.putString(mAppData.getSharedPfsKey(), mNewPasswdEditText.getText()
                         .toString());
                 editor.commit();
-                Dialog success = new AlertDialog.Builder(SettingPswActivity.this)
+                Dialog success = mDialogBuilder.setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle(R.string.success).setMessage(R.string.success_msg)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -107,5 +127,11 @@ public class SettingPswActivity extends Activity {
                 success.show();
             }
         });
+    }
+
+    private void cleanAllEditText() {
+        mOldPasswdEditText.setText("");
+        mNewPasswdEditText.setText("");
+        mConfirmPasswdEditText.setText("");
     }
 }
