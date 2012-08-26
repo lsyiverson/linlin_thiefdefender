@@ -45,22 +45,22 @@ public class LinlinThiefdefenderActivity extends Activity {
         // If the password is not set, pop up a dialog to set the password.
         if (null == password) {
             Dialog dialog = new AlertDialog.Builder(LinlinThiefdefenderActivity.this)
-            .setTitle(R.string.set_passwd).setMessage(R.string.set_passwd_msg)
-            .setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
+                    .setTitle(R.string.set_passwd).setMessage(R.string.set_passwd_msg)
+                    .setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(LinlinThiefdefenderActivity.this,
-                            SettingPswActivity.class);
-                    startActivity(intent);
-                }
-            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(LinlinThiefdefenderActivity.this,
+                                    SettingPswActivity.class);
+                            startActivity(intent);
+                        }
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    LinlinThiefdefenderActivity.this.finish();
-                }
-            }).setCancelable(false).create();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            LinlinThiefdefenderActivity.this.finish();
+                        }
+                    }).setCancelable(false).create();
             dialog.show();
         }
     }

@@ -63,7 +63,7 @@ public class SettingPswActivity extends Activity {
                     // Enter the wrong old password
                     if (!mOldPasswdEditText.getText().toString().equals(mOldPasswd)) {
                         Dialog oldPswWrong = new AlertDialog.Builder(SettingPswActivity.this)
-                        .setTitle(R.string.error).setMessage(R.string.old_psw_err).create();
+                                .setTitle(R.string.error).setMessage(R.string.old_psw_err).create();
                         oldPswWrong.show();
                         return;
                     }
@@ -76,7 +76,7 @@ public class SettingPswActivity extends Activity {
                 if (mNewPasswdEditText.getText().toString().equals("")
                         || mConfirmPasswdEditText.getText().toString().equals("")) {
                     Dialog emptyPswError = new AlertDialog.Builder(SettingPswActivity.this)
-                    .setTitle(R.string.error).setMessage(R.string.empty_psw_err).create();
+                            .setTitle(R.string.error).setMessage(R.string.empty_psw_err).create();
                     emptyPswError.show();
                     return;
                 }
@@ -85,8 +85,8 @@ public class SettingPswActivity extends Activity {
                 if (!mNewPasswdEditText.getText().toString()
                         .equals(mConfirmPasswdEditText.getText().toString())) {
                     Dialog mismatchPswError = new AlertDialog.Builder(SettingPswActivity.this)
-                    .setTitle(R.string.error).setMessage(R.string.mismatch_psw_err)
-                    .create();
+                            .setTitle(R.string.error).setMessage(R.string.mismatch_psw_err)
+                            .create();
                     mismatchPswError.show();
                     return;
                 }
@@ -97,13 +97,13 @@ public class SettingPswActivity extends Activity {
                         .toString());
                 editor.commit();
                 Dialog success = new AlertDialog.Builder(SettingPswActivity.this)
-                .setTitle(R.string.success).setMessage(R.string.success_msg)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SettingPswActivity.this.finish();
-                    }
-                }).setCancelable(false).create();
+                        .setTitle(R.string.success).setMessage(R.string.success_msg)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SettingPswActivity.this.finish();
+                            }
+                        }).setCancelable(false).create();
                 success.show();
             }
         });

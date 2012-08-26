@@ -88,15 +88,15 @@ public class AlertActivity extends Activity {
                         AlertActivity.this.finish();
                     } else {
                         Dialog errPasswd = new AlertDialog.Builder(AlertActivity.this)
-                        .setTitle(R.string.error)
-                        .setMessage(R.string.error_passwd)
-                        .setPositiveButton(R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mPasswdText.setText("");
-                            }
-                        }).setCancelable(false).create();
+                                .setTitle(R.string.error)
+                                .setMessage(R.string.error_passwd)
+                                .setPositiveButton(R.string.ok,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                mPasswdText.setText("");
+                                            }
+                                        }).setCancelable(false).create();
                         errPasswd.show();
                     }
                 }
