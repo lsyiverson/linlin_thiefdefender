@@ -1,6 +1,9 @@
 
 package com.linlin.thiefdefender;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -179,7 +182,8 @@ public class CtrlService extends Service implements SensorEventListener {
     private void storeAlert(String event) {
         ThiefDefenderStore store = ThiefDefenderStore.getDefaultStore(getApplicationContext());
         ContentValues alertValues = new ContentValues();
-        alertValues.put(ThiefDefenderAlert.START_TIME, System.currentTimeMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        alertValues.put(ThiefDefenderAlert.START_TIME, dateFormat.format(new Date()));
         alertValues.put(ThiefDefenderAlert.EVENT, event);
         store.insertOrIgnore(alertValues);
     }

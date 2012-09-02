@@ -79,7 +79,7 @@ public class ThiefDefenderStore {
         // Called only once, first time the DB is created
         @Override
         public void onCreate(SQLiteDatabase db) {
-            String sql = "create table " + TABLE_NAME + " (" + C_ID + " int primary key, "
+            String sql = "create table " + TABLE_NAME + " (" + C_ID + " integer primary key, "
                     + C_START_TIME + " text, " + C_END_TIME + " text, " + C_DURATION + " text, "
                     + C_EVENT + " text)";
             db.execSQL(sql);
