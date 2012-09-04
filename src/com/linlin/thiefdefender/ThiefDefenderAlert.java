@@ -15,7 +15,7 @@ public class ThiefDefenderAlert {
 
     public static final String DURATION = "duration";
 
-    public static final String EVENT = "event";
+    public static final String TRIGGER = "trigger";
 
     private ThiefDefenderAlert() {
     }

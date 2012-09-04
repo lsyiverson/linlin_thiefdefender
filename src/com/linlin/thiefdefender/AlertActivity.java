@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -29,6 +30,8 @@ public class AlertActivity extends Activity {
     private Vibrator mVibrator;
 
     private EditText mPasswdText;
+    
+    private long mAlertId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,10 @@ public class AlertActivity extends Activity {
         setContentView(R.layout.alert);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-
+      
+        Intent intent = getIntent();
+        mAlertId = intent.getLongExtra(getString(R.string.alert_id_broadcast_extra), -1);
+        
         Button enterPasswdButton = (Button)findViewById(R.id.passwd_button);
         mPasswdText = (EditText)findViewById(R.id.passwd);
 
@@ -90,6 +96,7 @@ public class AlertActivity extends Activity {
                             mVibrator.cancel();
                         }
                         AlertActivity.this.finish();
+                        sendAlertBroadcast();
                     } else {
                         AlertDialog.Builder dialogBuilder = (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) ? new AlertDialog.Builder(
                                 AlertActivity.this) : new AlertDialog.Builder(AlertActivity.this,
@@ -117,4 +124,10 @@ public class AlertActivity extends Activity {
         // Disable to exit the activity by press BACK key.
     }
 
+    private void sendAlertBroadcast() {
+		Intent broadcastIntent = new Intent();
+		broadcastIntent.setAction(getString(R.string.alert_stopped_broadcast_action));
+		broadcastIntent.putExtra(getString(R.string.alert_id_broadcast_extra), mAlertId);
+		sendBroadcast(broadcastIntent);
+    }
 }

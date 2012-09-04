@@ -6,6 +6,7 @@ package com.linlin.thiefdefender;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -27,7 +28,7 @@ public class ThiefDefenderStore {
 
     private static final String C_DURATION = "duration";
 
-    private static final String C_EVENT = "event";
+    private static final String C_TRIGGER = "trigger";
 
     private static final int DB_VERSION = 1;
 
@@ -66,6 +67,35 @@ public class ThiefDefenderStore {
         return retID;
     }
 
+    public boolean update(ContentValues values, long id) {
+    	 Log.d(TAG, "update on " + values + " where _id=" + id);
+         int affectedRows = -1;
+         SQLiteDatabase db = dbHelper.getWritableDatabase();
+         try {
+             String whereClause = C_ID + "=" + id;
+             affectedRows = db.update(TABLE_NAME, values, whereClause, null);
+         } catch (Exception e) {
+             Log.d(TAG, "Update failed: " + e.getLocalizedMessage());
+         } finally {
+             db.close();
+         }
+         return ((affectedRows == 1)? true : false);
+    }
+    
+    public String getAlertStartDate(long id) {
+    	SQLiteDatabase db = dbHelper.getReadableDatabase();
+    	try {
+            Cursor cursor = db.query(TABLE_NAME, new String[]{C_START_TIME}, C_ID + "=" + id, null, null, null, null);
+            try {
+                return cursor.moveToNext() ? cursor.getString(0) : null;
+            } finally {
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+    
     class DbHelper extends SQLiteOpenHelper {
         static final String TAG = "DbHelper";
 
@@ -81,7 +111,7 @@ public class ThiefDefenderStore {
         public void onCreate(SQLiteDatabase db) {
             String sql = "create table " + TABLE_NAME + " (" + C_ID + " integer primary key, "
                     + C_START_TIME + " text, " + C_END_TIME + " text, " + C_DURATION + " text, "
-                    + C_EVENT + " text)";
+                    + C_TRIGGER + " text)";
             db.execSQL(sql);
             Log.d(TAG, "onCreated sql: " + sql);
         }

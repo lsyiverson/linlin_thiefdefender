@@ -26,11 +26,6 @@ public class CtrlService extends Service implements SensorEventListener {
 
     public static final int START_SENSOR_LISTENER = 0;
 
-    /**
-     * Intent used for start AlertActivity
-     */
-    private Intent mAlertIntent;
-
     private Context mContext;
 
     private IntentFilter mFilter;
@@ -54,9 +49,6 @@ public class CtrlService extends Service implements SensorEventListener {
         super.onCreate();
 
         mContext = this;
-
-        mAlertIntent = new Intent(CtrlService.this, AlertActivity.class);
-        mAlertIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mFilter = new IntentFilter();
         mFilter.addAction(Intent.ACTION_SCREEN_ON);
         mFilter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -152,8 +144,7 @@ public class CtrlService extends Service implements SensorEventListener {
                     if (-1 != mLightValue) {
                         if (!mScreenON && event.values[0] / mLightValue >= 20) {
                             Log.i(TAG, "Light Alert!!!");
-                            startActivity(mAlertIntent);
-                            storeAlert("Light Sensor Changed");
+                            sendAlertBroadcast("Light Sensor");
                         }
                     }
                     mLightValue = event.values[0];
@@ -164,8 +155,7 @@ public class CtrlService extends Service implements SensorEventListener {
                     if (-1 != mProximityValue) {
                         if (!mScreenON && event.values[0] > mProximityValue) {
                             Log.i(TAG, "Proximity Alert!!!");
-                            startActivity(mAlertIntent);
-                            storeAlert("Proximity Sensor Changed");
+                            sendAlertBroadcast("Proximity Sensor");
                         }
                     }
                     mProximityValue = event.values[0];
@@ -174,18 +164,6 @@ public class CtrlService extends Service implements SensorEventListener {
             default:
                 break;
         }
-    }
-
-    /**
-     * @param event The event, which causes the alert.
-     */
-    private void storeAlert(String event) {
-        ThiefDefenderStore store = ThiefDefenderStore.getDefaultStore(getApplicationContext());
-        ContentValues alertValues = new ContentValues();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        alertValues.put(ThiefDefenderAlert.START_TIME, dateFormat.format(new Date()));
-        alertValues.put(ThiefDefenderAlert.EVENT, event);
-        store.insertOrIgnore(alertValues);
     }
 
     /**
@@ -213,6 +191,13 @@ public class CtrlService extends Service implements SensorEventListener {
         } else if (null != mLightSensor) {
             mSensorManager.unregisterListener(this, mLightSensor);
         }
+    }
+    
+    private void sendAlertBroadcast(String trigger) {
+		Intent broadcastIntent = new Intent();
+		broadcastIntent.setAction(getString(R.string.alert_started_broadcast_action));
+		broadcastIntent.putExtra(getString(R.string.alert_trigger_broadcast_extra), trigger);
+		sendBroadcast(broadcastIntent);
     }
 
     private Handler handler = new Handler() {

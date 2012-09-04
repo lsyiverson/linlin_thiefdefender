@@ -39,6 +39,15 @@
             <intent-filter android:priority="1000" >
             </intent-filter>
         </service>
+        
+        <receiver android:name=".AlertEventReceiver">
+            <intent-filter>
+                <action android:name="com.linlin.thiefdefender.ALERT_STARTED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.linlin.thiefdefender.ALERT_STOPPED" />
+            </intent-filter>        
+        </receiver>
     </application>
 
 </manifest>

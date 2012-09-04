@@ -25,5 +25,11 @@
     <string name="error_passwd">Sorry, the password is wrong!</string>
     <string name="modify_passwd">Modify Password</string>
     <string name="dump_database">Dump Database</string>
-
+   
+    <!-- Broadcast notification Intent constants -->
+   <string name="alert_trigger_broadcast_extra">com.linlin.thiefdefender.ALERT_TRIGGER</string>
+   <string  name="alert_id_broadcast_extra">com.linlin.thiefdefender.ALERT_ID</string>
+   <string name="alert_started_broadcast_action">com.linlin.thiefdefender.ALERT_STARTED</string>
+   <string name="alert_stopped_broadcast_action">com.linlin.thiefdefender.ALERT_STOPPED</string>
+   
 </resources>
