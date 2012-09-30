@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">林林盗難防止</string>
+    <string name="start_defender">盗難防止機能を開きます</string>
+    <string name="end_defender">盗難防止機能を閉じる</string>
+    <string name="alert_warning">警告：お使いの携帯電話ではない場合、それを下に入れてください！</string>
+    <string name="input_passwd_notice">それはあなたの携帯電話であれば、警告をオフにし、パスワード入力してください</string>
+    <string name="passwd_enter">アラームをオフにします！</string>
+    <string name="set_passwd">パスワードを設定</string>
+    <string name="set_passwd_msg">あなたは、アプリを使用開始する前に警告を停止するには、パスワードを設定する必要があります。</string>
+    <string name="cancel">キャンセル</string>
+    <string name="setting">設定</string>
+    <string name="enter_old_psw">古いパスワードを入力してください</string>
+    <string name="enter_new_psw">あなたの新しいパスワードを入力してください</string>
+    <string name="confirm_new_psw">新しいパスワードを確認してください。</string>
+    <string name="set_psw_bn">パスワードを設定</string>
+    <string name="error">エラー</string>
+    <string name="old_psw_err">あなたは、古いパスワードが間違って入力してください！</string>
+    <string name="empty_psw_err">あなたがパスワードを入力する必要があります！</string>
+    <string name="mismatch_psw_err">新しいパスワードとパスワードの確認が一致しません！</string>
+    <string name="success">成功</string>
+    <string name="success_msg">あなたはパスワードを設定している、それを覚えておいてください。</string>
+    <string name="ok">OK</string>
+    <string name="error_passwd">申し訳ありませんが、間違ったパスワード！</string>
+    <string name="modify_passwd">パスワードを変更する</string>
+
+</resources>
